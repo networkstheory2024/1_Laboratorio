@@ -1,0 +1,594 @@
+# 1 Introducción a R
+
+## 1.1 ¿Qué es R?
+
+R es un lenguaje de programación de scripting orientado al análisis estadístico y gráfico. Cuenta con una nutrida masa de usuarios y desarrolladores que lo han convertido en líder indiscutible dentro de la comunidad estadística internacional, tanto en el ámbito empresarial como en el académico.
+
+## 1.2 Entorno de programación
+
+Vamos a utilizar R desde la aplicación gráfica RStudio, un IDE (Integrated Development Environment) que proporciona un espacio de trabajo muy amigable y similar al de MATLAB. Al abrir el programa, se distinguen cuatro regiones de arriba a abajo y de izquierda a derecha:
+
+- **Editor de scripts.** Se recomienda trabajar aquí para guardar un archivo coherente con los ejercicios. Al seleccionar código y darle a *Run*, éste se ejecuta en la consola.
+- **Consola de comandos.** Para la introducción directa de código o su ejecución desde el editor.
+- **Panel de historial y workspace.** Similar al de MATLAB, donde se visualizan las variables en uso, sus valores o tipos.
+- **Panel con pestañas.** Agrupa las pestañas de gestión de archivos, gráficas, paquetes y ayuda.
+
+## 1.3 R basics
+
+```{r}
+# Esto es un comentario
+
+# Un cálculo simple
+2^10 - 24
+```
+
+Operador de asignación: `<-` (también es válido `=`):
+
+```{r}
+x <- 1
+x = 1
+```
+
+Si se quiere poner dos instrucciones en la misma línea, hay que separarlas con punto y coma. Escribiendo solo la variable en la terminal se mostrará su valor:
+
+```{r}
+# Dos comandos en la misma línea
+x <- 2^10 - 24; x
+```
+
+### Creación de secuencias
+
+Secuencia simple:
+
+```{r}
+x <- seq(1, 2, 0.1); x
+```
+
+Secuencia más compleja usando la función `seq(inicio, final, paso)`:
+
+```{r}
+y <- seq(1, 2, 0.1); y
+```
+
+Una secuencia heterogénea, hecha como la concatenación (`c`) de dos partes (1, 5 y `seq(100, 110, 2)`):
+
+```{r}
+z <- c(1, 5, seq(100, 110, 2)); z
+```
+
+#### Acceso a elementos de una secuencia
+
+```{r}
+x <- 1:10
+
+# Accedemos al primer elemento de la secuencia
+x[1]
+```
+
+Para obtener ayuda sobre una función en R, usamos el signo `?`:
+
+```{r}
+?c
+```
+
+#### Declaración de funciones
+
+Ejemplo: función de Fibonacci, que admite dos parámetros:
+- **n:** número de valores de la secuencia a calcular (requerido).
+- **full:** indica si se desea que la función devuelva toda la secuencia o solo el último valor (opcional, por defecto `FALSE`).
+
+```{r}
+fibonacci <- function(n, full=FALSE) {
+  # Reservamos memoria para el vector
+  fibvals <- numeric(n)
+  
+  # Ponemos los dos primeros valores de la secuencia
+  fibvals[1] <- 1
+  fibvals[2] <- 1
+  
+  # Bucle para calcular el resto de valores
+  if (n > 2) {
+    x <- 3:n
+    for (i in x) {
+      fibvals[i] <- fibvals[i-1] + fibvals[i-2]
+    }
+  }
+  
+  # Por defecto, devolvemos el valor en la posición n
+  if (!full) {
+    return(fibvals[n])
+  } else {
+    # En otro caso, retornamos toda la secuencia
+    return(fibvals)
+  }
+}
+```
+
+Pedimos el décimo elemento:
+
+```{r}
+fibonacci(10)
+```
+
+Toda la serie hasta el décimo elemento:
+
+```{r}
+fibonacci(10, TRUE)
+```
+
+# 2 Estadística con R
+
+## 2.1 Generación de variables aleatorias
+
+Los paquetes `base` y `stats` son fundamentales en R y proveen funciones básicas. Consultemos las distribuciones disponibles:
+
+```{r}
+?distributions
+```
+
+Para cada distribución `xxx` existen cuatro funciones:
+- `rxxx(n, ...)`: genera `n` muestras aleatorias según `xxx`.
+- `dxxx(x, ...)`: devuelve la función de densidad `f(x)`.
+- `pxxx(q, ...)`: devuelve la función de distribución acumulada (CDF):  
+  *F(q) = ∫(−∞,q) f(x) dx*
+- `qxxx(p, ...)`: devuelve el cuantil `q` tal que *F(q) = p*.
+
+Generamos 1000 muestras de una distribución normal `N(0,1)` y visualizamos:
+
+```{r}
+# Generamos valores aleatorios de una distribución normal
+x <- rnorm(1000, 0, 1)
+
+# Mostramos los valores obtenidos
+plot(x)
+```
+
+## 2.2 Estadística descriptiva
+
+Cálculo de media, mediana, varianza y desviación estándar:
+
+```{r}
+mean(x)
+```
+
+```{r}
+median(x)
+```
+
+```{r}
+var(x)
+```
+
+```{r}
+sd(x)
+```
+
+La función `summary` es muy versátil y proporciona mucha información:
+
+```{r}
+summary(x)
+```
+
+## 2.3 Función de densidad
+
+La función de densidad muestra cómo se distribuye una variable aleatoria. Por ejemplo, la distribución `N(0,1)` tiene una función de densidad en forma de campana de Gauss centrada en 0. Vemos la función de densidad empírica:
+
+```{r}
+# Empírica
+# Generamos datos desde una distribución normal
+x <- rnorm(1000, 0, 1)
+# Representamos la función de densidad de los datos generados
+plot(density(x))
+```
+
+Superponemos la función de densidad teórica usando `dnorm`:
+
+```{r}
+plot(density(x))
+# Teórica
+curve(dnorm(x, 0, 1), add=TRUE, lty=2, col="red")
+```
+
+## 2.4 Función de distribución
+
+Visualizamos la función de distribución acumulada (CDF) empírica:
+
+```{r}
+# Empírica CDF
+x <- rnorm(1000, 0, 1)
+Fx <- ecdf(x)
+plot(x, Fx(x))
+
+# Superponemos la teórica usando pnorm()
+curve(pnorm(x, 0, 1), add=TRUE, lty=2, col="red")
+```
+
+## 2.5 Q-Q Plots
+
+Los Q-Q plots comparan cuantiles de dos distribuciones. Si el resultado es una recta con offset 0 y pendiente 1, ambas distribuciones son similares.
+
+### 2.5.1 Ejemplo 1
+
+Generamos 1000 muestras de una distribución uniforme `U[0,1]` y la comparamos con la función de densidad teórica:
+
+```{r}
+# Empírica
+x <- runif(1000, 0, 1)
+plot(density(x))
+
+# Teórica
+curve(dunif(x, 0, 1), add=TRUE, lty=2, col="red")
+```
+
+Mostramos el Q-Q plot:
+
+```{r}
+# Q-Q plot
+qqplot(x, runif(length(x), 0, 1))
+# Superponemos una línea con offset 0 y pendiente 1
+abline(0, 1, lty=2, col="red")
+```
+
+### 2.5.2 Ejemplo 2
+
+Generamos dos conjuntos de 1000 valores, uno de una distribución exponencial y otro de la suma de tres distribuciones uniformes:
+
+```{r}
+x <- rnorm(1000, 0, 1)
+y <- runif(1000, -1, 1) + runif(1000, -1, 1) + runif(1000, -1, 1)
+```
+
+Si comparamos sus CDF, podrían parecer similares:
+
+```{r}
+plot(ecdf(x))
+lines(ecdf(y), col='blue')
+```
+
+El Q-Q plot muestra discrepancias en los extremos:
+
+```{r}
+qqplot(x, y)
+abline(0, 1, lty=2, col="red")
+```
+
+Para confirmar, aumentamos el número de muestras:
+
+```{r}
+# Mayor número de muestras
+x <- rnorm(100000, 0, 1)
+y <- runif(100000, -1, 1) + runif(100000, -1, 1) + runif(100000, -1, 1)
+qqplot(x, y)
+abline(0, 1, lty=2, col="red")
+```
+
+# 3 Resolución de problemas con R
+
+## 3.1 Problema 1.7
+
+Suponga que el tráfico en una red se distribuye según la siguiente tabla:
+
+| Aplicación | Longitud (B)   | %  |
+|------------|----------------|----|
+| Skype      | U(50,150)      | 5  |
+| P2P        | U(1000,1500)   | 60 |
+| Web        | exp(1/1000)    | 25 |
+| email      | N(800,100)     | 10 |
+
+1. **Obtenga la longitud media de las tramas en la red.**
+
+Para simular este problema, generamos muestras en las proporciones indicadas y las mezclamos:
+
+```{r}
+# Número total de muestras a generar
+N <- 1000
+# Generamos la proporción adecuada de cada tipo de tráfico
+pkts <- sample(c(
+  runif(0.05 * N, 50, 150),
+  runif(0.60 * N, 1000, 1500),
+  rexp(0.25 * N, 1/1000),
+  rnorm(0.10 * N, 800, 100)
+))
+```
+
+Visualizamos la función de densidad y la media:
+
+```{r}
+plot(density(pkts))
+abline(v = mean(pkts), lty = 2, col = "red")
+```
+
+Calcule la media:
+
+```{r}
+mean(pkts)
+```
+
+Debido al Teorema Central del Límite, al repetir el experimento muchas veces, las medias seguirán una distribución normal. Para repetir el proceso 1000 veces, definimos:
+
+```{r}
+# Función que calcula la media de la muestra
+gen <- function(i) {
+  pkts <- sample(c(
+    runif(0.05 * N, 50, 150),
+    runif(0.60 * N, 1000, 1500),
+    rexp(0.25 * N, 1/1000),
+    rnorm(0.10 * N, 800, 100)
+  ))
+  return(mean(pkts))
+}
+
+# Repetimos 1000 veces usando sapply
+pkts_avgs <- sapply(1:1000, gen)
+```
+
+Visualizamos la distribución de las medias:
+
+```{r}
+plot(density(pkts_avgs))
+```
+
+Verificamos que la media es cercana al valor teórico (1085):
+
+```{r}
+mean(pkts_avgs)
+```
+
+Podemos realizar un test t para obtener un intervalo de confianza:
+
+```{r}
+t <- t.test(pkts_avgs)
+t
+```
+
+Y graficar la densidad con la media estimada e intervalo de confianza:
+
+```{r}
+plot(density(pkts_avgs))
+abline(v = t$estimate, lty = 2, col = "red")
+abline(v = t$conf.int)
+```
+
+> **Ejercicio:** Calcule la longitud media del tráfico que **no es P2P**.
+
+## 3.2 Problema 1.8
+
+Sean dos variables aleatorias independientes `u1` y `u2`, uniformemente distribuidas entre 0 y 1. Calcule la esperanza del mínimo de las dos:
+
+$$ E[\min(\mu_1, \mu_2)] $$
+
+Utilizando la función `pmin`:
+
+```{r}
+u1 <- runif(1000, 0, 1)
+u2 <- runif(1000, 0, 1)
+umin <- pmin(u1, u2)
+plot(density(umin))
+```
+
+La media se acerca a 1/3:
+
+```{r}
+mean(umin)
+```
+
+Para obtener mayor rigor, repetimos el experimento:
+
+```{r}
+f <- function(i) {
+  u1 <- runif(1000, 0, 1)
+  u2 <- runif(1000, 0, 1)
+  return(mean(pmin(u1, u2)))
+}
+out <- sapply(1:1000, f)
+t <- t.test(out)
+t
+```
+
+> **Ejercicio:** Problema 1.5. Obtenga la expresión de la función de densidad del mínimo de tres variables aleatorias independientes distribuidas uniformemente entre 0 y 1.
+
+## 3.3 Problema 1.9
+
+El 40% de los paquetes sufren un retardo de red que se modela con una variable aleatoria uniformemente distribuida entre 10 ms y 70 ms, y el 60% restante con una variable aleatoria exponencial de media 30 ms. Calcule el retardo medio de aquellos paquetes que tienen más de 50 ms de retardo.
+
+Simulamos el retardo en la red:
+
+```{r}
+N <- 10000
+retardo <- sample(c(
+  runif(0.40 * N, 10, 70),
+  rexp(0.60 * N, 1/30)
+))
+plot(density(retardo))
+```
+
+Calcule la media total:
+
+```{r}
+mean(retardo)
+```
+
+Seleccionamos solo los retardo mayores a 50 ms:
+
+```{r}
+retardo50 <- retardo[retardo > 50]
+plot(density(retardo50))
+mean(retardo50)
+```
+
+Repetimos el experimento para obtener un intervalo de confianza:
+
+```{r}
+get_avg <- function(i) {
+  N <- 10000
+  retardo <- sample(c(
+    runif(0.40 * N, 10, 70),
+    rexp(0.60 * N, 1/30)
+  ))
+  return(mean(retardo[retardo > 50]))
+}
+
+average <- sapply(1:1000, get_avg)
+mean(average)
+```
+
+También se puede realizar un test t:
+
+```{r}
+t <- t.test(average)
+t
+```
+
+# 4 Importancia de una exploración profunda del los datos (Optativo)
+
+Cuando se exploran grandes conjuntos de datos, ninguna de las métricas/herramientas anteriores es suficiente *por separado*. Para ilustrarlo, tomemos el conjunto de datos sintéticos llamado [Datasaurus Dozen](https://dl.acm.org/doi/10.1145/3025453.3025912), disponible en CRAN:
+
+```{r}
+if (!requireNamespace("datasauRus", quietly=TRUE))
+  install.packages("datasauRus")
+library(datasauRus)
+
+unique(datasaurus_dozen$dataset)
+````
+
+```{r}
+head(datasaurus_dozen)
+````
+
+Tenemos 13 conjuntos de datos (identificados por la columna `dataset`), y cada conjunto de datos consta de dos columnas, *x* y *y*. Calculemos las medias y las desviaciones típicas para ambas coordenadas y por conjunto de datos:
+
+```{r}
+for (name in unique(datasaurus_dozen$dataset)) {
+  dataset = subset(datasaurus_dozen, dataset==name)
+  print(sprintf(
+    "mean_x = %.3f, sd_x = %.3f, mean_y = %.3f, sd_y = %.3f  = %s",
+    mean(dataset$x), sd(dataset$x), mean(dataset$y), sd(dataset$y), name))
+}
+```
+
+Son casi iguales. Pero, ¿son similares las distribuciones? En este caso, basta con representar gráficamente cada conjunto de datos para comprobar que, en realidad, son muy diferentes:
+
+```{r}
+library(ggplot2)
+
+ggplot(datasaurus_dozen, aes(x=x, y=y)) +
+  geom_point()+
+  facet_wrap(~dataset, ncol=4)
+````
+
+
+# 5 Teorema de Bayes (opcional)
+
+La probabilidad condicionada se define como:
+
+$$
+Pr(A|B)=\frac{Pr(A \cap B)}{Pr(B)}
+$$
+
+Intercambiando las variables:
+
+$$
+Pr(B|A)=\frac{Pr(A \cap B)}{Pr(A)}
+$$
+
+De lo cual se deduce:
+
+$$
+Pr(A \cap B)=Pr(A|B)Pr(B)=Pr(B|A)Pr(A)
+$$
+
+Y se extrae el Teorema de Bayes:
+
+$$
+Pr(A|B)=\frac{Pr(B|A)Pr(A)}{Pr(B)}
+$$
+
+> *Bayes’s theorem is to the theory of probability what Pythagoras’s theorem is to geometry.*  
+> (Sir Harold Jeffreys)
+
+Ilustremos su utilidad con un ejemplo. Supongamos que se ha desarrollado un test para detectar una enfermedad incurable con prevalencia de 1/10000. El test tiene:
+- **Sensibilidad:** 99% (de cada 100 enfermos, 99 dan positivo).
+- **Especificidad:** 99% (de cada 100 sanos, 99 dan negativo).
+
+Conocemos:
+- Pr(enfermo) = 1/10000 = 0.0001
+- Pr(+|enfermo) = 0.99
+- Pr(−|sano) = 0.99
+
+El objetivo es calcular la probabilidad de estar enfermo dado que el test da positivo:
+
+$$
+Pr(enfermo|+)=\frac{Pr(+|enfermo)Pr(enfermo)}{Pr(+)}
+$$
+
+Calculamos Pr(+) como:
+
+$$
+Pr(+) = Pr(+|enfermo)Pr(enfermo) + Pr(+|sano)Pr(sano)
+$$
+
+Dado que:
+
+$$
+Pr(+|sano) = 1 - Pr(-|sano)
+$$
+
+Entonces:
+
+$$
+Pr(+) = 0.99 \times 0.0001 + (1-0.99) \times (1-0.0001) = 0.010098
+$$
+
+Finalmente:
+
+$$
+Pr(enfermo|+) = \frac{0.99 \times 0.0001}{0.010098} \approx 0.01
+$$
+
+Simulemos este proceso en R.
+
+```{r}
+# Función para generar datos de personas enfermas o sanas
+population <- function(n) {
+  # Vector (TRUE/FALSE)
+  sick <- runif(n) < 0.0001
+  people_df <- data.frame(sick)
+  return(people_df)
+}
+```
+
+```{r}
+# Función que simula el resultado del test
+test <- function(people_df, sensitivity, specificity) {
+  random <- runif(nrow(people_df))
+  people_df$testedPositive <- (people_df$sick & (random < sensitivity)) |
+                              (!people_df$sick & (random > specificity))
+  return(people_df)
+}
+```
+
+Generamos una población similar a la de Madrid:
+
+```{r}
+madrid <- population(3000000)
+head(madrid)
+```
+
+Todos se someten al test:
+
+```{r}
+madrid <- test(madrid, 0.99, 0.99)
+head(madrid)
+```
+
+Calculamos la proporción de enfermos entre los positivos:
+
+```{r}
+positive <- subset(madrid, testedPositive)
+positiveAndSick <- subset(madrid, testedPositive & sick)
+nrow(positiveAndSick) / nrow(positive)
+```
+
+Este ejercicio ilustra por qué se repite el test.
+
+> **Ejercicio:** Repetir el test varias veces para aquellos que dan positivo. ¿Qué porcentaje de enfermos sobre positivos se obtiene tras un segundo test positivo? ¿Y tras un tercero? ¿Qué es más importante para confiar en el resultado final, la sensibilidad o la especificidad? ¿Por qué?
