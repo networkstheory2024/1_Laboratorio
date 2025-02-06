@@ -1,17 +1,31 @@
+
+
 # 1 Introducción a R
 
-## 1.1 ¿Qué es R?
+## ]1.1 ¿Qué es R?
 
-R es un lenguaje de programación de scripting orientado al análisis estadístico y gráfico. Cuenta con una nutrida masa de usuarios y desarrolladores que lo han convertido en líder indiscutible dentro de la comunidad estadística internacional, tanto en el ámbito empresarial como en el académico.
+R es un lenguaje de programación de scripting orientado al análisis
+estadístico y gráfico. Cuenta con una nutrida masa de usuarios y
+desarrolladores que lo han convertido en líder indiscutible dentro de la
+comunidad estadística internacional, tanto en el ámbito empresarial como
+en el académico.
 
 ## 1.2 Entorno de programación
 
-Vamos a utilizar R desde la aplicación gráfica RStudio, un IDE (Integrated Development Environment) que proporciona un espacio de trabajo muy amigable y similar al de MATLAB. Al abrir el programa, se distinguen cuatro regiones de arriba a abajo y de izquierda a derecha:
+Vamos a utilizar R desde la aplicación gráfica RStudio, un IDE
+(Integrated Development Environment) que proporciona un espacio de
+trabajo muy amigable y similar al de MATLAB. Al abrir el programa, se
+distinguen cuatro regiones de arriba a abajo y de izquierda a derecha:
 
-- **Editor de scripts.** Se recomienda trabajar aquí para guardar un archivo coherente con los ejercicios. Al seleccionar código y darle a *Run*, éste se ejecuta en la consola.
-- **Consola de comandos.** Para la introducción directa de código o su ejecución desde el editor.
-- **Panel de historial y workspace.** Similar al de MATLAB, donde se visualizan las variables en uso, sus valores o tipos.
-- **Panel con pestañas.** Agrupa las pestañas de gestión de archivos, gráficas, paquetes y ayuda.
+-   **Editor de scripts.** Se recomienda trabajar aquí para guardar un
+    archivo coherente con los ejercicios. Al seleccionar código y darle
+    a *Run*, éste se ejecuta en la consola.
+-   **Consola de comandos.** Para la introducción directa de código o su
+    ejecución desde el editor.
+-   **Panel de historial y workspace.** Similar al de MATLAB, donde se
+    visualizan las variables en uso, sus valores o tipos.
+-   **Panel con pestañas.** Agrupa las pestañas de gestión de archivos,
+    gráficas, paquetes y ayuda.
 
 ## 1.3 R basics
 
@@ -22,6 +36,10 @@ Vamos a utilizar R desde la aplicación gráfica RStudio, un IDE (Integrated Dev
 2^10 - 24
 ```
 
+```{r}
+
+```
+
 Operador de asignación: `<-` (también es válido `=`):
 
 ```{r}
@@ -29,7 +47,9 @@ x <- 1
 x = 1
 ```
 
-Si se quiere poner dos instrucciones en la misma línea, hay que separarlas con punto y coma. Escribiendo solo la variable en la terminal se mostrará su valor:
+Si se quiere poner dos instrucciones en la misma línea, hay que
+separarlas con punto y coma. Escribiendo solo la variable en la terminal
+se mostrará su valor:
 
 ```{r}
 # Dos comandos en la misma línea
@@ -50,7 +70,8 @@ Secuencia más compleja usando la función `seq(inicio, final, paso)`:
 y <- seq(1, 2, 0.1); y
 ```
 
-Una secuencia heterogénea, hecha como la concatenación (`c`) de dos partes (1, 5 y `seq(100, 110, 2)`):
+Una secuencia heterogénea, hecha como la concatenación (`c`) de dos
+partes (1, 5 y `seq(100, 110, 2)`):
 
 ```{r}
 z <- c(1, 5, seq(100, 110, 2)); z
@@ -73,9 +94,10 @@ Para obtener ayuda sobre una función en R, usamos el signo `?`:
 
 #### Declaración de funciones
 
-Ejemplo: función de Fibonacci, que admite dos parámetros:
-- **n:** número de valores de la secuencia a calcular (requerido).
-- **full:** indica si se desea que la función devuelva toda la secuencia o solo el último valor (opcional, por defecto `FALSE`).
+Ejemplo: función de Fibonacci, que admite dos parámetros: - **n:**
+número de valores de la secuencia a calcular (requerido). - **full:**
+indica si se desea que la función devuelva toda la secuencia o solo el
+último valor (opcional, por defecto `FALSE`).
 
 ```{r}
 fibonacci <- function(n, full=FALSE) {
@@ -120,20 +142,22 @@ fibonacci(10, TRUE)
 
 ## 2.1 Generación de variables aleatorias
 
-Los paquetes `base` y `stats` son fundamentales en R y proveen funciones básicas. Consultemos las distribuciones disponibles:
+Los paquetes `base` y `stats` son fundamentales en R y proveen funciones
+básicas. Consultemos las distribuciones disponibles:
 
 ```{r}
 ?distributions
 ```
 
-Para cada distribución `xxx` existen cuatro funciones:
-- `rxxx(n, ...)`: genera `n` muestras aleatorias según `xxx`.
-- `dxxx(x, ...)`: devuelve la función de densidad `f(x)`.
-- `pxxx(q, ...)`: devuelve la función de distribución acumulada (CDF):  
-  *F(q) = ∫(−∞,q) f(x) dx*
-- `qxxx(p, ...)`: devuelve el cuantil `q` tal que *F(q) = p*.
+Para cada distribución `xxx` existen cuatro funciones: - `rxxx(n, ...)`:
+genera `n` muestras aleatorias según `xxx`. - `dxxx(x, ...)`: devuelve
+la función de densidad `f(x)`. - `pxxx(q, ...)`: devuelve la función de
+distribución acumulada (CDF):\
+*F(q) = ∫(−∞,q) f(x) dx* - `qxxx(p, ...)`: devuelve el cuantil `q` tal
+que *F(q) = p*.
 
-Generamos 1000 muestras de una distribución normal `N(0,1)` y visualizamos:
+Generamos 1000 muestras de una distribución normal `N(0,1)` y
+visualizamos:
 
 ```{r}
 # Generamos valores aleatorios de una distribución normal
@@ -171,7 +195,10 @@ summary(x)
 
 ## 2.3 Función de densidad
 
-La función de densidad muestra cómo se distribuye una variable aleatoria. Por ejemplo, la distribución `N(0,1)` tiene una función de densidad en forma de campana de Gauss centrada en 0. Vemos la función de densidad empírica:
+La función de densidad muestra cómo se distribuye una variable
+aleatoria. Por ejemplo, la distribución `N(0,1)` tiene una función de
+densidad en forma de campana de Gauss centrada en 0. Vemos la función de
+densidad empírica:
 
 ```{r}
 # Empírica
@@ -205,11 +232,14 @@ curve(pnorm(x, 0, 1), add=TRUE, lty=2, col="red")
 
 ## 2.5 Q-Q Plots
 
-Los Q-Q plots comparan cuantiles de dos distribuciones. Si el resultado es una recta con offset 0 y pendiente 1, ambas distribuciones son similares.
+Los Q-Q plots comparan cuantiles de dos distribuciones. Si el resultado
+es una recta con offset 0 y pendiente 1, ambas distribuciones son
+similares.
 
 ### 2.5.1 Ejemplo 1
 
-Generamos 1000 muestras de una distribución uniforme `U[0,1]` y la comparamos con la función de densidad teórica:
+Generamos 1000 muestras de una distribución uniforme `U[0,1]` y la
+comparamos con la función de densidad teórica:
 
 ```{r}
 # Empírica
@@ -231,7 +261,8 @@ abline(0, 1, lty=2, col="red")
 
 ### 2.5.2 Ejemplo 2
 
-Generamos dos conjuntos de 1000 valores, uno de una distribución exponencial y otro de la suma de tres distribuciones uniformes:
+Generamos dos conjuntos de 1000 valores, uno de una distribución
+exponencial y otro de la suma de tres distribuciones uniformes:
 
 ```{r}
 x <- rnorm(1000, 0, 1)
@@ -266,18 +297,20 @@ abline(0, 1, lty=2, col="red")
 
 ## 3.1 Problema 1.7
 
-Suponga que el tráfico en una red se distribuye según la siguiente tabla:
+Suponga que el tráfico en una red se distribuye según la siguiente
+tabla:
 
-| Aplicación | Longitud (B)   | %  |
-|------------|----------------|----|
-| Skype      | U(50,150)      | 5  |
-| P2P        | U(1000,1500)   | 60 |
-| Web        | exp(1/1000)    | 25 |
-| email      | N(800,100)     | 10 |
+| Aplicación | Longitud (B) | \%  |
+|------------|--------------|-----|
+| Skype      | U(50,150)    | 5   |
+| P2P        | U(1000,1500) | 60  |
+| Web        | exp(1/1000)  | 25  |
+| email      | N(800,100)   | 10  |
 
-1. **Obtenga la longitud media de las tramas en la red.**
+1.  **Obtenga la longitud media de las tramas en la red.**
 
-Para simular este problema, generamos muestras en las proporciones indicadas y las mezclamos:
+Para simular este problema, generamos muestras en las proporciones
+indicadas y las mezclamos:
 
 ```{r}
 # Número total de muestras a generar
@@ -304,7 +337,9 @@ Calcule la media:
 mean(pkts)
 ```
 
-Debido al Teorema Central del Límite, al repetir el experimento muchas veces, las medias seguirán una distribución normal. Para repetir el proceso 1000 veces, definimos:
+Debido al Teorema Central del Límite, al repetir el experimento muchas
+veces, las medias seguirán una distribución normal. Para repetir el
+proceso 1000 veces, definimos:
 
 ```{r}
 # Función que calcula la media de la muestra
@@ -349,11 +384,13 @@ abline(v = t$estimate, lty = 2, col = "red")
 abline(v = t$conf.int)
 ```
 
-> **Ejercicio:** Calcule la longitud media del tráfico que **no es P2P**.
+> **Ejercicio:** Calcule la longitud media del tráfico que **no es
+> P2P**.
 
 ## 3.2 Problema 1.8
 
-Sean dos variables aleatorias independientes `u1` y `u2`, uniformemente distribuidas entre 0 y 1. Calcule la esperanza del mínimo de las dos:
+Sean dos variables aleatorias independientes `u1` y `u2`, uniformemente
+distribuidas entre 0 y 1. Calcule la esperanza del mínimo de las dos:
 
 $$ E[\min(\mu_1, \mu_2)] $$
 
@@ -385,11 +422,17 @@ t <- t.test(out)
 t
 ```
 
-> **Ejercicio:** Problema 1.5. Obtenga la expresión de la función de densidad del mínimo de tres variables aleatorias independientes distribuidas uniformemente entre 0 y 1.
+> **Ejercicio:** Problema 1.5. Obtenga la expresión de la función de
+> densidad del mínimo de tres variables aleatorias independientes
+> distribuidas uniformemente entre 0 y 1.
 
 ## 3.3 Problema 1.9
 
-El 40% de los paquetes sufren un retardo de red que se modela con una variable aleatoria uniformemente distribuida entre 10 ms y 70 ms, y el 60% restante con una variable aleatoria exponencial de media 30 ms. Calcule el retardo medio de aquellos paquetes que tienen más de 50 ms de retardo.
+El 40% de los paquetes sufren un retardo de red que se modela con una
+variable aleatoria uniformemente distribuida entre 10 ms y 70 ms, y el
+60% restante con una variable aleatoria exponencial de media 30 ms.
+Calcule el retardo medio de aquellos paquetes que tienen más de 50 ms de
+retardo.
 
 Simulamos el retardo en la red:
 
@@ -441,7 +484,11 @@ t
 
 # 4 Importancia de una exploración profunda del los datos (Optativo)
 
-Cuando se exploran grandes conjuntos de datos, ninguna de las métricas/herramientas anteriores es suficiente *por separado*. Para ilustrarlo, tomemos el conjunto de datos sintéticos llamado [Datasaurus Dozen](https://dl.acm.org/doi/10.1145/3025453.3025912), disponible en CRAN:
+Cuando se exploran grandes conjuntos de datos, ninguna de las
+métricas/herramientas anteriores es suficiente *por separado*. Para
+ilustrarlo, tomemos el conjunto de datos sintéticos llamado [Datasaurus
+Dozen](https://dl.acm.org/doi/10.1145/3025453.3025912), disponible en
+CRAN:
 
 ```{r}
 if (!requireNamespace("datasauRus", quietly=TRUE))
@@ -449,13 +496,16 @@ if (!requireNamespace("datasauRus", quietly=TRUE))
 library(datasauRus)
 
 unique(datasaurus_dozen$dataset)
-````
+```
 
 ```{r}
 head(datasaurus_dozen)
-````
+```
 
-Tenemos 13 conjuntos de datos (identificados por la columna `dataset`), y cada conjunto de datos consta de dos columnas, *x* y *y*. Calculemos las medias y las desviaciones típicas para ambas coordenadas y por conjunto de datos:
+Tenemos 13 conjuntos de datos (identificados por la columna `dataset`),
+y cada conjunto de datos consta de dos columnas, *x* y *y*. Calculemos
+las medias y las desviaciones típicas para ambas coordenadas y por
+conjunto de datos:
 
 ```{r}
 for (name in unique(datasaurus_dozen$dataset)) {
@@ -466,7 +516,9 @@ for (name in unique(datasaurus_dozen$dataset)) {
 }
 ```
 
-Son casi iguales. Pero, ¿son similares las distribuciones? En este caso, basta con representar gráficamente cada conjunto de datos para comprobar que, en realidad, son muy diferentes:
+Son casi iguales. Pero, ¿son similares las distribuciones? En este caso,
+basta con representar gráficamente cada conjunto de datos para comprobar
+que, en realidad, son muy diferentes:
 
 ```{r}
 library(ggplot2)
@@ -474,63 +526,67 @@ library(ggplot2)
 ggplot(datasaurus_dozen, aes(x=x, y=y)) +
   geom_point()+
   facet_wrap(~dataset, ncol=4)
-````
-
+```
 
 # 5 Teorema de Bayes (opcional)
 
 La probabilidad condicionada se define como:
 
 $$
-Pr(A|B)=\frac{Pr(A \cap B)}{Pr(B)}
+Pr(A\|B)=\frac{Pr(A \cap B)}{Pr(B)}
 $$
 
 Intercambiando las variables:
 
 $$
-Pr(B|A)=\frac{Pr(A \cap B)}{Pr(A)}
+Pr(B\|A)=\frac{Pr(A \cap B)}{Pr(A)}
 $$
 
 De lo cual se deduce:
 
 $$
-Pr(A \cap B)=Pr(A|B)Pr(B)=Pr(B|A)Pr(A)
+Pr(A \cap B)=Pr(A\|B)Pr(B)=Pr(B\|A)Pr(A)
 $$
 
 Y se extrae el Teorema de Bayes:
 
 $$
-Pr(A|B)=\frac{Pr(B|A)Pr(A)}{Pr(B)}
+Pr(A\|B)=\frac{Pr(B|A)Pr(A)}{Pr(B)}
 $$
 
-> *Bayes’s theorem is to the theory of probability what Pythagoras’s theorem is to geometry.*  
+> *Bayes’s theorem is to the theory of probability what Pythagoras’s
+> theorem is to geometry.*\
 > (Sir Harold Jeffreys)
 
-Ilustremos su utilidad con un ejemplo. Supongamos que se ha desarrollado un test para detectar una enfermedad incurable con prevalencia de 1/10000. El test tiene:
-- **Sensibilidad:** 99% (de cada 100 enfermos, 99 dan positivo).
-- **Especificidad:** 99% (de cada 100 sanos, 99 dan negativo).
+Ilustremos su utilidad con un ejemplo. Supongamos que se ha desarrollado
+un test para detectar una enfermedad incurable con prevalencia de
+1/10000. El test tiene: - **Sensibilidad:** 99% (de cada 100 enfermos,
+99 dan positivo). - **Especificidad:** 99% (de cada 100 sanos, 99 dan
+negativo).
 
-Conocemos:
-- Pr(enfermo) = 1/10000 = 0.0001
-- Pr(+|enfermo) = 0.99
-- Pr(−|sano) = 0.99
+Conocemos:\
+$$
+Pr(enfermo) = 1/10000 = 0.0001 - Pr(+\|enfermo) = 0.99 -
+Pr(−\|sano) = 0.99
+$$
 
-El objetivo es calcular la probabilidad de estar enfermo dado que el test da positivo:
+El objetivo es calcular la probabilidad de estar enfermo dado que el
+test da positivo:
 
 $$
-Pr(enfermo|+)=\frac{Pr(+|enfermo)Pr(enfermo)}{Pr(+)}
+Pr(enfermo\|+)=\frac{Pr(+|enfermo)Pr(enfermo)}{Pr(+)}
 $$
 
 Calculamos Pr(+) como:
 
 $$
-Pr(+) = Pr(+|enfermo)Pr(enfermo) + Pr(+|sano)Pr(sano)
+Pr(+) = Pr(+\|enfermo)Pr(enfermo) + Pr(+\|sano)Pr(sano)
 $$
 
 Dado que:
 
 $$
-Pr(+|sano) = 1 - Pr(-|sano)
+Pr(+\|sano) = 1 - Pr(-\|sano)
 $$
 
 Entonces:
@@ -542,13 +598,14 @@ $$
 Finalmente:
 
 $$
-Pr(enfermo|+) = \frac{0.99 \times 0.0001}{0.010098} \approx 0.01
+Pr(enfermo\|+) = \frac{0.99 \times 0.0001}{0.010098} \approx 0.01
 $$
 
 Simulemos este proceso en R.
 
-```{r}
 # Función para generar datos de personas enfermas o sanas
+
+```{r}
 population <- function(n) {
   # Vector (TRUE/FALSE)
   sick <- runif(n) < 0.0001
@@ -591,4 +648,8 @@ nrow(positiveAndSick) / nrow(positive)
 
 Este ejercicio ilustra por qué se repite el test.
 
-> **Ejercicio:** Repetir el test varias veces para aquellos que dan positivo. ¿Qué porcentaje de enfermos sobre positivos se obtiene tras un segundo test positivo? ¿Y tras un tercero? ¿Qué es más importante para confiar en el resultado final, la sensibilidad o la especificidad? ¿Por qué?
+> **Ejercicio:** Repetir el test varias veces para aquellos que dan
+> positivo. ¿Qué porcentaje de enfermos sobre positivos se obtiene tras
+> un segundo test positivo? ¿Y tras un tercero? ¿Qué es más importante
+> para confiar en el resultado final, la sensibilidad o la
+> especificidad? ¿Por qué?
